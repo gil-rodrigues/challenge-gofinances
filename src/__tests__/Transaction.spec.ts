@@ -13,11 +13,11 @@ let connection: Connection;
 describe('Transaction', () => {
   beforeAll(async () => {
     connection = await createConnection('test-connection');
-    
+
     await connection.query('DROP TABLE IF EXISTS transactions');
     await connection.query('DROP TABLE IF EXISTS categories');
     await connection.query('DROP TABLE IF EXISTS migrations');
-    
+
     await connection.runMigrations();
   });
 
@@ -38,21 +38,21 @@ describe('Transaction', () => {
       title: 'March Salary',
       type: 'income',
       value: 4000,
-      category: 'Salary',
+      category: 'Salary'
     });
 
     await request(app).post('/transactions').send({
       title: 'April Salary',
       type: 'income',
       value: 4000,
-      category: 'Salary',
+      category: 'Salary'
     });
 
     await request(app).post('/transactions').send({
       title: 'Macbook',
       type: 'outcome',
       value: 6000,
-      category: 'Eletronics',
+      category: 'Eletronics'
     });
 
     const response = await request(app).get('/transactions');
@@ -61,7 +61,7 @@ describe('Transaction', () => {
     expect(response.body.balance).toMatchObject({
       income: 8000,
       outcome: 6000,
-      total: 2000,
+      total: 2000
     });
   });
 
@@ -72,21 +72,21 @@ describe('Transaction', () => {
       title: 'March Salary',
       type: 'income',
       value: 4000,
-      category: 'Salary',
+      category: 'Salary'
     });
 
     const transaction = await transactionsRepository.findOne({
       where: {
-        title: 'March Salary',
-      },
+        title: 'March Salary'
+      }
     });
 
     expect(transaction).toBeTruthy();
 
     expect(response.body).toMatchObject(
       expect.objectContaining({
-        id: expect.any(String),
-      }),
+        id: expect.any(String)
+      })
     );
   });
 
@@ -98,13 +98,13 @@ describe('Transaction', () => {
       title: 'March Salary',
       type: 'income',
       value: 4000,
-      category: 'Salary',
+      category: 'Salary'
     });
 
     const category = await categoriesRepository.findOne({
       where: {
-        title: 'Salary',
-      },
+        title: 'Salary'
+      }
     });
 
     expect(category).toBeTruthy();
@@ -112,16 +112,16 @@ describe('Transaction', () => {
     const transaction = await transactionsRepository.findOne({
       where: {
         title: 'March Salary',
-        category_id: category?.id,
-      },
+        category_id: category?.id
+      }
     });
 
     expect(transaction).toBeTruthy();
 
     expect(response.body).toMatchObject(
       expect.objectContaining({
-        id: expect.any(String),
-      }),
+        id: expect.any(String)
+      })
     );
   });
 
@@ -130,7 +130,7 @@ describe('Transaction', () => {
     const categoriesRepository = getRepository(Category);
 
     const { identifiers } = await categoriesRepository.insert({
-      title: 'Salary',
+      title: 'Salary'
     });
 
     const insertedCategoryId = identifiers[0].id;
@@ -139,14 +139,14 @@ describe('Transaction', () => {
       title: 'March Salary',
       type: 'income',
       value: 4000,
-      category: 'Salary',
+      category: 'Salary'
     });
 
     const transaction = await transactionsRepository.findOne({
       where: {
         title: 'March Salary',
-        category_id: insertedCategoryId,
-      },
+        category_id: insertedCategoryId
+      }
     });
 
     const categoriesCount = await categoriesRepository.find();
@@ -160,22 +160,22 @@ describe('Transaction', () => {
       title: 'March Salary',
       type: 'income',
       value: 4000,
-      category: 'Salary',
+      category: 'Salary'
     });
 
     const response = await request(app).post('/transactions').send({
       title: 'iPhone',
       type: 'outcome',
       value: 4500,
-      category: 'Eletronics',
+      category: 'Eletronics'
     });
 
     expect(response.status).toBe(400);
     expect(response.body).toMatchObject(
       expect.objectContaining({
         status: 'error',
-        message: expect.any(String),
-      }),
+        message: expect.any(String)
+      })
     );
   });
 
@@ -186,7 +186,7 @@ describe('Transaction', () => {
       title: 'March Salary',
       type: 'income',
       value: 4000,
-      category: 'Salary',
+      category: 'Salary'
     });
 
     await request(app).delete(`/transactions/${response.body.id}`);
@@ -211,12 +211,12 @@ describe('Transaction', () => {
     expect(categories).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          title: 'Others',
+          title: 'Others'
         }),
         expect.objectContaining({
-          title: 'Food',
-        }),
-      ]),
+          title: 'Food'
+        })
+      ])
     );
 
     expect(transactions).toHaveLength(3);
@@ -224,17 +224,17 @@ describe('Transaction', () => {
       expect.arrayContaining([
         expect.objectContaining({
           title: 'Loan',
-          type: 'income',
+          type: 'income'
         }),
         expect.objectContaining({
           title: 'Website Hosting',
-          type: 'outcome',
+          type: 'outcome'
         }),
         expect.objectContaining({
           title: 'Ice cream',
-          type: 'outcome',
-        }),
-      ]),
+          type: 'outcome'
+        })
+      ])
     );
   });
 });

@@ -10,7 +10,8 @@ export default class CreateTransactionTable1594404082974
           {
             name: 'id',
             type: 'uuid',
-            isPrimary: true
+            isPrimary: true,
+            default: 'uuid_generate_v4()'
           },
           {
             name: 'title',
@@ -22,7 +23,7 @@ export default class CreateTransactionTable1594404082974
           },
           {
             name: 'value',
-            type: 'money'
+            type: 'integer'
           },
           {
             name: 'category_id',

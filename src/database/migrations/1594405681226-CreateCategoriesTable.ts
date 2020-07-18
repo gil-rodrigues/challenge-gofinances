@@ -10,7 +10,8 @@ export default class CreateCategoriesTable1594405681226
           {
             name: 'id',
             type: 'uuid',
-            isPrimary: true
+            isPrimary: true,
+            default: 'uuid_generate_v4()'
           },
           {
             name: 'title',

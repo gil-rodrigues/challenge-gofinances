@@ -9,9 +9,9 @@ import {
 } from 'typeorm';
 import Category from './Category';
 
-@Entity()
+@Entity('transactions')
 class Transaction {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -20,7 +20,7 @@ class Transaction {
   @Column()
   type: 'income' | 'outcome';
 
-  @Column('money')
+  @Column('integer')
   value: number;
 
   @ManyToOne(() => Category)
